@@ -1,0 +1,100 @@
+@page
+@model CrmLite.Pages.Customers.IndexModel
+@{
+    ViewData["Title"] = "客户管理";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0"><i class="bi bi-building"></i> 客户管理</h3>
+    <a asp-page="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 新增客户</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input asp-for="SearchName" class="form-control" placeholder="搜索客户名称..." />
+    </div>
+    <div class="col-md-3">
+        <input asp-for="SearchIndustry" class="form-control" placeholder="搜索行业..." />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary"><i class="bi bi-search"></i> 搜索</button>
+        <a asp-page="Index" class="btn btn-outline-secondary">重置</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>客户编号</th>
+                <th>客户名称</th>
+                <th>行业</th>
+                <th>级别</th>
+                <th>地区</th>
+                <th>电话</th>
+                <th>创建时间</th>
+                <th style="width:200px">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Model.Customers.Any())
+            {
+                <tr><td colspan="8" class="text-center text-muted py-4">暂无客户数据</td></tr>
+            }
+            @foreach (var c in Model.Customers)
+            {
+                <tr>
+                    <td><code>@c.Code</code></td>
+                    <td><strong>@c.Name</strong></td>
+                    <td>@(c.Industry ?? "-")</td>
+                    <td>
+                        @if (c.Level == CrmLite.Models.CustomerLevel.VIP)
+                        {<span class="badge bg-danger">VIP</span> }
+                    else if (c.Level == CrmLite.Models.CustomerLevel.Important)
+                    {<span class="badge bg-warning text-dark">重要</span> }
+                    else
+                    {<span class="badge bg-secondary">普通</span>}
+                    </td>
+                    <td>@(c.Region ?? "-")</td>
+                    <td>@(c.Phone ?? "-")</td>
+                    <td>@c.CreatedAt.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a asp-page="Details" asp-route-id="@c.CustomerId" class="btn btn-sm btn-info text-white" title="详情"><i class="bi bi-eye"></i></a>
+                        <a asp-page="Edit" asp-route-id="@c.CustomerId" class="btn btn-sm btn-warning" title="编辑"><i class="bi bi-pencil"></i></a>
+                        <a asp-page="Delete" asp-route-id="@c.CustomerId" class="btn btn-sm btn-danger" title="删除"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-page="Index" asp-route-pageIndex="@i"
+                       asp-route-SearchName="@Model.SearchName" asp-route-SearchIndustry="@Model.SearchIndustry">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

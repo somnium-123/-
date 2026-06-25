@@ -1,0 +1,64 @@
+@page "{id:int}"
+@model CrmLite.Pages.Customers.EditModel
+@{ ViewData["Title"] = "编辑客户"; }
+
+<nav aria-label="breadcrumb"><ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-page="Index">客户管理</a></li>
+    <li class="breadcrumb-item active">编辑客户 — @Model.Customer.Name</li>
+</ol></nav>
+
+<h4 class="mb-4"><i class="bi bi-pencil-square"></i> 编辑客户</h4>
+
+<div class="row"><div class="col-md-8">
+<form method="post">
+    <input type="hidden" asp-for="Customer.CustomerId" />
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="mb-3">
+        <label class="form-label">客户编号</label>
+        <input value="@Model.Customer.Code" class="form-control" readonly />
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6"><label asp-for="Customer.Name" class="form-label required"></label>
+            <input asp-for="Customer.Name" class="form-control" /><span asp-validation-for="Customer.Name" class="text-danger"></span></div>
+
+        <div class="col-md-6"><label asp-for="Customer.Level" class="form-label"></label>
+            <select asp-for="Customer.Level" asp-items="Model.LevelList" class="form-select"></select></div>
+
+        <div class="col-md-6"><label asp-for="Customer.Industry" class="form-label"></label>
+            <input asp-for="Customer.Industry" class="form-control" /></div>
+
+        <div class="col-md-6"><label asp-for="Customer.Scale" class="form-label"></label>
+            <select asp-for="Customer.Scale" class="form-select">
+                <option value="">请选择</option><option>小微企业</option><option>中型企业</option><option>大型企业</option></select></div>
+
+        <div class="col-md-6"><label asp-for="Customer.Region" class="form-label"></label>
+            <select asp-for="Customer.Region" class="form-select">
+                <option value="">请选择</option><option>华东</option><option>华南</option><option>华北</option><option>华中</option><option>西南</option><option>西北</option><option>东北</option></select></div>
+
+        <div class="col-md-6"><label asp-for="Customer.Phone" class="form-label"></label>
+            <input asp-for="Customer.Phone" class="form-control" /></div>
+
+        <div class="col-12"><label asp-for="Customer.Address" class="form-label"></label>
+            <input asp-for="Customer.Address" class="form-control" /></div>
+
+        <div class="col-md-6"><label asp-for="Customer.PostalCode" class="form-label"></label>
+            <input asp-for="Customer.PostalCode" class="form-control" /></div>
+
+        <div class="col-md-6"><label asp-for="Customer.Website" class="form-label"></label>
+            <input asp-for="Customer.Website" class="form-control" /></div>
+
+        <div class="col-12"><label asp-for="Customer.Remark" class="form-label"></label>
+            <textarea asp-for="Customer.Remark" class="form-control" rows="3"></textarea></div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> 保存修改</button>
+        <a asp-page="Index" class="btn btn-secondary">取消</a>
+    </div>
+</form>
+</div></div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+<style>.required::after { content: " *"; color: #dc3545; }</style>

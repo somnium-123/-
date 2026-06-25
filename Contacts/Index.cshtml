@@ -1,0 +1,50 @@
+@page
+@model CrmLite.Pages.Contacts.IndexModel
+@{ ViewData["Title"] = "联系人管理"; }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3><i class="bi bi-person-lines-fill"></i> 联系人管理</h3>
+    <a asp-page="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 新增联系人</a>
+</div>
+
+@if (TempData["Success"] != null)
+{<div class="alert alert-success alert-dismissible fade show">@TempData["Success"]<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>}
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3">
+        <select name="CustomerId" class="form-select" onchange="this.form.submit()">
+            <option value="">全部客户</option>
+            @foreach (var c in Model.Contacts.Select(c => c.Customer).DistinctBy(c => c.CustomerId))
+            {<option value="@c.CustomerId" selected="@(Model.CustomerId == c.CustomerId)">@c.Name</option>}
+        </select>
+    </div>
+    <div class="col-auto">
+        <a asp-page="Index" class="btn btn-outline-secondary">重置</a>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark"><tr>
+            <th>姓名</th><th>所属客户</th><th>职务</th><th>部门</th><th>电话</th><th>邮箱</th><th>主要联系人</th><th style="width:120px">操作</th>
+        </tr></thead>
+        <tbody>
+            @if (!Model.Contacts.Any())
+            {<tr><td colspan="8" class="text-center text-muted py-4">暂无联系人数据</td></tr>}
+            @foreach (var c in Model.Contacts)
+            {<tr>
+                <td><strong>@c.Name</strong></td>
+                <td>@c.Customer?.Name</td>
+                <td>@(c.Position ?? "-")</td>
+                <td>@(c.Department ?? "-")</td>
+                <td>@(c.Phone ?? "-")</td>
+                <td>@(c.Email ?? "-")</td>
+                <td>@(c.IsPrimary ? "✓" : "")</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@c.ContactId" class="btn btn-sm btn-warning" title="编辑"><i class="bi bi-pencil"></i></a>
+                    <a asp-page="Index" class="btn btn-sm btn-danger" title="删除"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>}
+        </tbody>
+    </table>
+</div>

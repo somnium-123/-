@@ -1,0 +1,50 @@
+@page "{id:int}"
+@model CrmLite.Pages.Contacts.EditModel
+@{ ViewData["Title"] = "编辑联系人"; }
+
+<nav aria-label="breadcrumb"><ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-page="Index">联系人管理</a></li>
+    <li class="breadcrumb-item active">编辑联系人 — @Model.Contact.Name</li>
+</ol></nav>
+
+<h4 class="mb-4"><i class="bi bi-pencil-square"></i> 编辑联系人</h4>
+
+<div class="row"><div class="col-md-8">
+<form method="post">
+    <input type="hidden" asp-for="Contact.ContactId" />
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="row g-3">
+        <div class="col-md-6"><label asp-for="Contact.CustomerId" class="form-label required"></label>
+            <select asp-for="Contact.CustomerId" asp-items="Model.CustomerList" class="form-select"></select></div>
+
+        <div class="col-md-6"><label asp-for="Contact.Name" class="form-label required"></label>
+            <input asp-for="Contact.Name" class="form-control" /><span asp-validation-for="Contact.Name" class="text-danger"></span></div>
+
+        <div class="col-md-6"><label asp-for="Contact.Position" class="form-label"></label>
+            <input asp-for="Contact.Position" class="form-control" /></div>
+
+        <div class="col-md-6"><label asp-for="Contact.Department" class="form-label"></label>
+            <input asp-for="Contact.Department" class="form-control" /></div>
+
+        <div class="col-md-6"><label asp-for="Contact.Phone" class="form-label"></label>
+            <input asp-for="Contact.Phone" class="form-control" /></div>
+
+        <div class="col-md-6"><label asp-for="Contact.Email" class="form-label"></label>
+            <input asp-for="Contact.Email" class="form-control" /></div>
+
+        <div class="col-12"><div class="form-check">
+            <input asp-for="Contact.IsPrimary" class="form-check-input" />
+            <label asp-for="Contact.IsPrimary" class="form-check-label"></label>
+        </div></div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> 保存修改</button>
+        <a asp-page="Index" class="btn btn-secondary">取消</a>
+    </div>
+</form>
+</div></div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
+<style>.required::after { content: " *"; color: #dc3545; }</style>
