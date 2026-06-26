@@ -1,0 +1,73 @@
+@page "{id:int}"
+@model CrmLite.Pages.Contracts.EditModel
+@{ ViewData["Title"] = "编辑合同"; }
+
+<nav aria-label="breadcrumb"><ol class="breadcrumb">
+    <li class="breadcrumb-item"><a asp-page="Index">合同管理</a></li>
+    <li class="breadcrumb-item active">编辑合同 — @Model.Contract.Name</li>
+</ol></nav>
+
+<h4 class="mb-4"><i class="bi bi-pencil-square"></i> 编辑合同</h4>
+
+<div class="row"><div class="col-md-8">
+<form method="post">
+    <input type="hidden" asp-for="Contract.ContractId" />
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="mb-3">
+        <label class="form-label">合同编号</label>
+        <input value="@Model.Contract.ContractCode" class="form-control" readonly />
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6"><label asp-for="Contract.Name" class="form-label required"></label>
+            <input asp-for="Contract.Name" class="form-control" /><span asp-validation-for="Contract.Name" class="text-danger"></span></div>
+
+        <div class="col-md-6"><label asp-for="Contract.Status" class="form-label"></label>
+            <select asp-for="Contract.Status" asp-items="Model.StatusList" class="form-select"></select></div>
+
+        <div class="col-md-6"><label asp-for="Contract.CustomerId" class="form-label required"></label>
+            <select asp-for="Contract.CustomerId" asp-items="Model.CustomerList" class="form-select" id="customerSelect"></select></div>
+
+        <div class="col-md-6"><label asp-for="Contract.ContactId" class="form-label"></label>
+            <select asp-for="Contract.ContactId" class="form-select" id="contactSelect">
+                <option value="">-- 可选 --</option>
+            </select></div>
+
+        <div class="col-md-6"><label asp-for="Contract.Amount" class="form-label required"></label>
+            <div class="input-group"><span class="input-group-text">¥</span>
+                <input asp-for="Contract.Amount" class="form-control" step="0.01" min="0.01" /></div>
+            <span asp-validation-for="Contract.Amount" class="text-danger"></span></div>
+
+        <div class="col-md-6"><label asp-for="Contract.SignedDate" class="form-label required"></label>
+            <input asp-for="Contract.SignedDate" class="form-control" type="date" /></div>
+
+        <div class="col-md-6"><label asp-for="Contract.ExpectedPaymentDate" class="form-label"></label>
+            <input asp-for="Contract.ExpectedPaymentDate" class="form-control" type="date" /></div>
+
+        <div class="col-12"><label asp-for="Contract.Remark" class="form-label"></label>
+            <textarea asp-for="Contract.Remark" class="form-control" rows="3"></textarea></div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> 保存修改</button>
+        <a asp-page="Index" class="btn btn-secondary">取消</a>
+    </div>
+</form>
+</div></div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $('#customerSelect').on('change', function() {
+            var $contact = $('#contactSelect'); $contact.empty();
+            var customerId = $(this).val();
+            if (!customerId) { $contact.append('<option value="">-- 可选 --</option>'); return; }
+            $.getJSON('?handler=ContactsByCustomer&customerId=' + customerId, function(data) {
+                $contact.append('<option value="">-- 可选 --</option>');
+                $.each(data, function(i, item) { $contact.append('<option value="' + item.contactId + '">' + item.name + '</option>'); });
+            });
+        });
+    </script>
+}
+<style>.required::after { content: " *"; color: #dc3545; }</style>
