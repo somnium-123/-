@@ -1,0 +1,16 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.vs/
+.vscode/
+*.db
+*.ldf
+*.mdf
+
+# NuGet
+packages/
+
+# Migrations (auto-generated, keep track of)
+# Migrations/   <- do NOT ignore Migrations folder
