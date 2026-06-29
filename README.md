@@ -29,6 +29,7 @@
 | **黄陈熙** | 领域建模师 (DDD) | 领域分析、实体/值对象/聚合设计、ER 图 |
 | **关张旭** | 前端开发 (Frontend) | Razor 页面、Bootstrap 5、jQuery Validation |
 | **杨焱熙** | 后端开发 (Backend) | Code First 实体、DbContext、Migration、Controller |
+| **张雨宣** | 后端助理 (Backend Assist) | 协助实体编码、数据校验、API 测试与文档 |
 
 ---
 
@@ -162,5 +163,5 @@ erDiagram
 
 ---
 
-> **信管2901-01组** — 刘子涵 · 黄陈熙 · 关张旭 · 杨焱熙  
+> **信管2901-01组** — 刘子涵 · 黄陈熙 · 关张旭 · 杨焱熙 · 张雨宣  
 > © 2026 南京工业大学 计算机学院
